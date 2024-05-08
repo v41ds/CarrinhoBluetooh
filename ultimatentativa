@@ -1,0 +1,202 @@
+// C++ code
+//
+#include <Servo.h>
+#include <SoftwareSerial.h>
+SoftwareSerial bluetoothSerial(0,1); //RX, TX
+
+ int trasesquerdaA = 13;
+ int trasesquerdaB = 12;
+ int trasdireitaA = 11;
+ int trasdireitaB = 10;
+ int frentedireitaA = 9;
+ int frentedireitaB = 8;
+ int frenteesquerdaA = 7; 
+ int frenteesquerdaB = 6; 
+
+ Servo servoMotor; // Define o objeto do servo motor
+
+  int i=50;
+void setup()
+{
+  
+  Serial.begin(9600);
+  bluetoothSerial.begin(9600);
+  
+  pinMode(trasesquerdaA, OUTPUT);
+  pinMode(trasesquerdaB, OUTPUT);
+  pinMode(trasdireitaA, OUTPUT);
+  pinMode(trasdireitaB, OUTPUT);
+  pinMode(frentedireitaA, OUTPUT);
+  pinMode(frentedireitaB, OUTPUT);
+  pinMode(frenteesquerdaA, OUTPUT);
+  pinMode(frenteesquerdaB, OUTPUT);
+  servoMotor.attach(2);
+  
+}
+
+void loop()
+{
+char codigo='\0';
+String valor = "";
+  
+  while (bluetoothSerial.available() > 0) {    
+    String linha = bluetoothSerial.readString();
+    for(int i = 0 ;i < linha.length(); i++){
+      int caracter = linha[i];
+      if (isDigit(caracter)) {       
+         valor += (char)caracter;    
+      }else if (caracter != '\n') {   
+          codigo = caracter;         
+      }else{
+        break;
+      }  
+    }
+  }
+
+
+  switch (codigo){
+    case 'F': frente(); break;
+    case 'f': frente(); break;
+    case 'P': parar(); break;
+    case 'p': parar(); break;
+    case 'E': esquerda(); break;
+    case 'e': esquerda(); break;
+    case 'D': direita(); break;
+    case 'd': direita(); break;
+    case 'R': re(); break;
+    case 'r': re(); break;
+    case 'Q': di(); break;
+    case 'q': di(); break;
+    case 'S': es(); break;
+    case 's': es(); break;
+    case 'Z': reesquerda(); break;
+    case 'z': reesquerda(); break;
+    case 'C': redireita(); break;
+    case 'c': redireita(); break;
+  }
+}
+
+
+
+void re(){
+ digitalWrite(trasesquerdaA, HIGH);
+ digitalWrite(trasesquerdaB, LOW);
+ digitalWrite(trasdireitaA, HIGH);
+ digitalWrite(trasdireitaB, LOW);
+ digitalWrite(frentedireitaA, LOW);
+ digitalWrite(frentedireitaB, HIGH);
+ digitalWrite(frenteesquerdaA, HIGH);
+ digitalWrite(frenteesquerdaB, LOW);
+ delay(i); 
+}
+
+void parar(){
+   digitalWrite(trasesquerdaA, LOW);
+   digitalWrite(trasesquerdaB, LOW);
+   digitalWrite(trasdireitaA, LOW);
+   digitalWrite(trasdireitaB, LOW);
+   digitalWrite(frentedireitaA, LOW);
+   digitalWrite(frentedireitaB, LOW);
+   digitalWrite(frenteesquerdaA, LOW);
+   digitalWrite(frenteesquerdaB, LOW);
+   delay(i);
+}
+
+void direita(){
+ digitalWrite(trasdireitaA, LOW);
+ digitalWrite(trasdireitaB, HIGH);
+  
+ digitalWrite(trasesquerdaA, LOW);
+ digitalWrite(trasesquerdaB, LOW);
+  
+ digitalWrite(frentedireitaA, LOW);
+ digitalWrite(frentedireitaB, LOW);
+ digitalWrite(frenteesquerdaA, LOW);
+ digitalWrite(frenteesquerdaB, HIGH);
+ delay(i); 
+}
+void esquerda(){
+ digitalWrite(trasesquerdaA, LOW);
+ digitalWrite(trasesquerdaB, HIGH);
+  
+ digitalWrite(trasdireitaA, LOW);
+ digitalWrite(trasdireitaB, LOW);
+  
+ digitalWrite(frentedireitaA, HIGH);
+ digitalWrite(frentedireitaB, LOW);
+ digitalWrite(frenteesquerdaA, LOW);
+ digitalWrite(frenteesquerdaB, LOW);
+ delay(i);  
+  
+}
+
+void frente(){
+ digitalWrite(trasesquerdaA, LOW);
+ digitalWrite(trasesquerdaB, HIGH);
+ digitalWrite(trasdireitaA, LOW);
+ digitalWrite(trasdireitaB, HIGH);
+ digitalWrite(frentedireitaA, HIGH);
+ digitalWrite(frentedireitaB, LOW);
+ digitalWrite(frenteesquerdaA, LOW);
+ digitalWrite(frenteesquerdaB, HIGH);
+}
+
+void es(){
+ digitalWrite(trasesquerdaA, LOW);
+ digitalWrite(trasesquerdaB, HIGH);
+  
+ digitalWrite(trasdireitaA, LOW);
+ digitalWrite(trasdireitaB, LOW);
+  
+ digitalWrite(frentedireitaA, HIGH);
+ digitalWrite(frentedireitaB, LOW);
+ digitalWrite(frenteesquerdaA, LOW);
+ digitalWrite(frenteesquerdaB, LOW);
+ delay(i);  
+}
+
+void di(){
+ digitalWrite(trasdireitaA, LOW);
+ digitalWrite(trasdireitaB, HIGH);
+  
+ digitalWrite(trasesquerdaA, LOW);
+ digitalWrite(trasesquerdaB, LOW);
+  
+ digitalWrite(frentedireitaA, LOW);
+ digitalWrite(frentedireitaB, LOW);
+ digitalWrite(frenteesquerdaA, LOW);
+ digitalWrite(frenteesquerdaB, HIGH);
+ delay(i);
+}
+
+
+void redireita(){
+ digitalWrite(trasdireitaA, HIGH);
+ digitalWrite(trasdireitaB, LOW);
+  
+ digitalWrite(trasesquerdaA, LOW);
+ digitalWrite(trasesquerdaB, LOW);
+  
+ digitalWrite(frentedireitaA, LOW);
+ digitalWrite(frentedireitaB, LOW);
+ digitalWrite(frenteesquerdaA, HIGH);
+ digitalWrite(frenteesquerdaB, LOW);
+ delay(i);
+}
+
+
+void reesquerda(){
+ digitalWrite(trasesquerdaA, HIGH);
+ digitalWrite(trasesquerdaB, LOW);
+  
+ digitalWrite(trasdireitaA, LOW);
+ digitalWrite(trasdireitaB, LOW);
+  
+ digitalWrite(frentedireitaA, LOW);
+ digitalWrite(frentedireitaB, HIGH);
+ digitalWrite(frenteesquerdaA, LOW);
+ digitalWrite(frenteesquerdaB, LOW);
+ delay(i); 
+
+
+}
